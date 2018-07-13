@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MathGame</string>
+    <string name="title_activity_wrong_answer">wrong_answer</string>
+</resources>

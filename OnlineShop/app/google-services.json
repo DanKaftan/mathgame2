@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "887361174104",
+    "firebase_url": "https://onlineshopmac-af165.firebaseio.com",
+    "project_id": "onlineshopmac-af165",
+    "storage_bucket": "onlineshopmac-af165.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887361174104:android:6b9bcbd5ab018f6a",
+        "android_client_info": {
+          "package_name": "com.dan.kaftan.onlineshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "887361174104-adt9rkodcmh7luifcs6o75akki3i4hts.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dan.kaftan.onlineshop",
+            "certificate_hash": "ff70778ef356282941b90151c3275dfdd062d7b8"
+          }
+        },
+        {
+          "client_id": "887361174104-t2ssbd30lc7slqmm1f8i7t62ln1pciuc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdYR9g9K_B50HPGOXeIFEsMmPdiF1tjhY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "887361174104-t2ssbd30lc7slqmm1f8i7t62ln1pciuc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

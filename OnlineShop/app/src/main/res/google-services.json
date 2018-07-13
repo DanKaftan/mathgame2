@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "876383155421",
+    "firebase_url": "https://online-shop-mc.firebaseio.com",
+    "project_id": "online-shop-mc",
+    "storage_bucket": "online-shop-mc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876383155421:android:6b9bcbd5ab018f6a",
+        "android_client_info": {
+          "package_name": "com.dan.kaftan.onlineshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "876383155421-513fqkgf2c437s0atm37fh5b99hephqh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFFtmzFNOjw9JTEcamVOn4ytE9UesETI4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "104288827800",
+    "firebase_url": "https://mathgame-d40e3.firebaseio.com",
+    "project_id": "mathgame-d40e3",
+    "storage_bucket": "mathgame-d40e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104288827800:android:83e2246dc3fe0e96",
+        "android_client_info": {
+          "package_name": "com.dan.kaftan.mathgame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104288827800-md655csb8efhlc7sgd8bs8ur6fnpiqdb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dan.kaftan.mathgame",
+            "certificate_hash": "ff70778ef356282941b90151c3275dfdd062d7b8"
+          }
+        },
+        {
+          "client_id": "104288827800-u4re615s7kuqm4qihro1k56ordnu0kpn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_NipCx38bCOBKyTEHUIhKSbkT2MYSSJc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "104288827800-u4re615s7kuqm4qihro1k56ordnu0kpn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
