@@ -63,6 +63,7 @@ public class EndGame extends AppCompatActivity {
 
 
     //start new game
+    // test
 
     Button btnStartNewGame;
     public void startNewGame (){
