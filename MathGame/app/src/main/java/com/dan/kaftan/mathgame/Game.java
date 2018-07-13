@@ -27,6 +27,10 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
+import com.dan.kaftan.mathgame.targil.BankOfTargils;
+import com.dan.kaftan.mathgame.targil.Targil;
+import com.dan.kaftan.mathgame.targil.TargilAdd;
+
 public class Game extends AppCompatActivity {
 
     private static final long START_TIME_IN_MILLIS = 600000;
@@ -60,6 +64,8 @@ public class Game extends AppCompatActivity {
     Context context;
     CountDownTimer ab;
 
+    // this holds the targilim we want to run
+    BankOfTargils bankOfTargils = new BankOfTargils();
 
 
     @Override
@@ -83,7 +89,7 @@ public class Game extends AppCompatActivity {
         tvScore.setText("score: " + Integer.toString(score));
         timer = (TextView) findViewById(R.id.timer);
 
-
+        initTargilim();
         setGame();
 
     }
@@ -143,10 +149,16 @@ public class Game extends AppCompatActivity {
 
     @NonNull
     private void chooseTargil() {
-        num1 = rand.nextInt(9) + 1;
-        num2 = rand.nextInt(10 - num1) + 1;
-        tv.setText(Integer.toString(num1) + " + " + Integer.toString(num2));
-        trueAnswer = num1 + num2;
+
+        // take random targil
+        Targil targil = bankOfTargils.removeRandomTargil();
+
+        // to display it
+        tv.setText(targil.getTargilAsString());
+
+        // calc the targil result
+        trueAnswer = targil.calc();
+
         answers.add(trueAnswer);
     }
 
@@ -160,7 +172,19 @@ public class Game extends AppCompatActivity {
         tv.setVisibility(View.VISIBLE);
         tvScore.setVisibility(View.VISIBLE);
         timer.setVisibility(View.VISIBLE);
+    }
 
+    private void initTargilim() {
+
+        // take targilim form bank of targilim
+        List<Targil> targilim = bankOfTargils.getTarglilim();
+
+        // fill it with new targilim
+        for (int firstNum = 1 ; firstNum < 10; firstNum++){
+            for (int secondNum = 1 ; firstNum + secondNum <= 10 ; secondNum++){
+                targilim.add(new TargilAdd(firstNum,secondNum,"+"));
+            }
+        }
     }
 
     public void tva1OnClick(View v) throws InterruptedException {
