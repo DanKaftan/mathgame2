@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,6 +31,10 @@ import android.media.SoundPool;
 import com.dan.kaftan.mathgame.targil.BankOfTargils;
 import com.dan.kaftan.mathgame.targil.Targil;
 import com.dan.kaftan.mathgame.targil.TargilAdd;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 public class Game extends AppCompatActivity {
 
@@ -64,9 +69,19 @@ public class Game extends AppCompatActivity {
     Context context;
     CountDownTimer ab;
 
+    // for disabling sound
+    boolean  isVisible = true;
+
+    // sounds
+    MediaPlayer correctSound;
+    MediaPlayer falseSound;
+
+    boolean gameOver = false;
+
+
     // this holds the targilim we want to run
     BankOfTargils bankOfTargils = new BankOfTargils();
-
+    private RewardedVideoAd mRewardedVideoAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +105,13 @@ public class Game extends AppCompatActivity {
         timer = (TextView) findViewById(R.id.timer);
 
         initTargilim();
+        correctSound= MediaPlayer.create(Game.this,R.raw.correct);
+        falseSound= MediaPlayer.create(Game.this,R.raw.eror);
+
         setGame();
 
     }
+
 
     public void setGame() {
 
@@ -225,8 +244,11 @@ public class Game extends AppCompatActivity {
 
             if (!timeOut && tvaNum == trueAnswer) {
                 iv.setImageResource(R.drawable.vi);
-                MediaPlayer correctSound= MediaPlayer.create(Game.this,R.raw.correct);
-                correctSound.start();
+
+                // do not disturb with sounds if not visible
+                if(isVisible){
+                    correctSound.start();
+                }
                 //   correctSoundEffect(context);
                 score = score + 10;
                 answerCheck = true;
@@ -235,8 +257,11 @@ public class Game extends AppCompatActivity {
                 //result();
             } else {
                 iv.setImageResource(R.drawable.x);
-                MediaPlayer falseSound= MediaPlayer.create(Game.this,R.raw.eror);
-                falseSound.start();
+
+                // do not disturb with sounds if not visible
+                if(isVisible){
+                    falseSound.start();
+                }
                 answerCheck = false;
                 invalidationCounter = invalidationCounter + 1;
                 //     result();
@@ -309,20 +334,21 @@ public class Game extends AppCompatActivity {
     }
 
     public void gameOver() {
-        Intent a = new Intent(Game.this, EndGame.class);
-        a.putExtra("score", score);
-        startActivity(a);
+
+        if (isVisible){
+            Intent a = new Intent(Game.this, EndGame.class);
+            a.putExtra("score", score);
+            startActivity(a);
             /*setGame();
             hiv1.setVisibility(View.VISIBLE);
             hiv2.setVisibility(View.VISIBLE);
             hiv3.setVisibility(View.VISIBLE);
             invalidationCounter = 0;
             score = 0;*/
+        } else {
+            gameOver = true;
         }
-
-
-
-
+    }
 
     public void setTimerForAnswer() {
         mcountDownTimer = new CountDownTimer(11000, 1000) { //40000 milli seconds is total time, 1000 milli seconds is time interval
@@ -421,6 +447,16 @@ public void correctSoundEffect (){
 public void falseSoundEffect (){
 
 }
+
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        isVisible = hasFocus;
+        if (isVisible && gameOver) {
+            gameOver = false;
+            gameOver();
+        }
+    }
+
 }
 
 

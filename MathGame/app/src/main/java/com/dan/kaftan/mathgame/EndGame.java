@@ -7,6 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+
 import java.util.concurrent.TimeUnit;
 
 public class EndGame extends AppCompatActivity {
@@ -14,14 +19,23 @@ public class EndGame extends AppCompatActivity {
 
     TextView tvFinalScore;
     int finalScore = 0;
+    Button btnStartNewGame;
+    Button btnShare;
+    Button btnRevive;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_game);
 
+
+
+
+
         setFinalScore();
         share();
+        revive();
         startNewGame();
     }
 
@@ -39,7 +53,6 @@ public class EndGame extends AppCompatActivity {
 
 // share app
 
-    Button btnShare;
     public void share (){
 
         btnShare = (Button) findViewById(R.id.btnshare);
@@ -63,11 +76,8 @@ public class EndGame extends AppCompatActivity {
 
 
     //start new game
-    // test
-    //test2
-    //test3
 
-    Button btnStartNewGame;
+
     public void startNewGame (){
         btnStartNewGame =(Button)findViewById(R.id.btnStartNewGame);
         btnStartNewGame.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +95,18 @@ public class EndGame extends AppCompatActivity {
         });
 
 
+
+    }
+
+    private void revive (){
+
+        btnRevive = (Button)findViewById(R.id.btnrevive);
+        btnRevive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+            }
+        });
 
     }
 }
