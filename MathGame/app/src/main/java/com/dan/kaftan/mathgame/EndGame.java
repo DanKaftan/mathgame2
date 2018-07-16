@@ -9,12 +9,13 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import java.util.concurrent.TimeUnit;
 
-public class EndGame extends AppCompatActivity {
+public class EndGame extends AppCompatActivity implements RewardedVideoAdListener {
 
 
     TextView tvFinalScore;
@@ -22,38 +23,48 @@ public class EndGame extends AppCompatActivity {
     Button btnStartNewGame;
     Button btnShare;
     Button btnRevive;
+    private RewardedVideoAd mRewardedVideoAd;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_game);
-
-
-
+        btnRevive = (Button) findViewById(R.id.btnrevive);
+        MobileAds.initialize(this, "ca-app-pub-7775472521601802~5091426220");
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewardedVideoAd.setRewardedVideoAdListener(this);
+        loadRewardedVideoAd();
+        btnRevive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mRewardedVideoAd.isLoaded()) {
+                    mRewardedVideoAd.show();
+                }
+            }
+        });
 
 
         setFinalScore();
         share();
-        revive();
         startNewGame();
     }
 
     // set the text of the final score
-    public void setFinalScore(){
+    public void setFinalScore() {
 
         Intent myIntent = getIntent(); // gets the previously created intent
-        finalScore = myIntent.getIntExtra("score",0);
+        finalScore = myIntent.getIntExtra("score", 0);
 
-        tvFinalScore = (TextView)findViewById(R.id.tvFinalScore);
-        tvFinalScore.setText( "FINAL SCORE: " + Integer.toString(finalScore));
+        tvFinalScore = (TextView) findViewById(R.id.tvFinalScore);
+        tvFinalScore.setText("FINAL SCORE: " + Integer.toString(finalScore));
     }
-
 
 
 // share app
 
-    public void share (){
+    public void share() {
 
         btnShare = (Button) findViewById(R.id.btnshare);
         btnShare.setOnClickListener(new View.OnClickListener() {
@@ -74,12 +85,11 @@ public class EndGame extends AppCompatActivity {
     }
 
 
-
     //start new game
 
 
-    public void startNewGame (){
-        btnStartNewGame =(Button)findViewById(R.id.btnStartNewGame);
+    public void startNewGame() {
+        btnStartNewGame = (Button) findViewById(R.id.btnStartNewGame);
         btnStartNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,18 +105,67 @@ public class EndGame extends AppCompatActivity {
         });
 
 
+    }
+    private void loadRewardedVideoAd() {
+        mRewardedVideoAd.loadAd("ca-app-pub-7775472521601802/7600355285",
+                new AdRequest.Builder().build());
+    }
+
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
 
     }
 
-    private void revive (){
+    @Override
+    public void onRewardedVideoAdOpened() {
 
-        btnRevive = (Button)findViewById(R.id.btnrevive);
-        btnRevive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                
-            }
-        });
+    }
 
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
+
+    }
+    @Override
+    public void onResume() {
+        mRewardedVideoAd.resume(this);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mRewardedVideoAd.pause(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mRewardedVideoAd.destroy(this);
+        super.onDestroy();
     }
 }
