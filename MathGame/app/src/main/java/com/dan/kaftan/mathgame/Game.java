@@ -2,17 +2,14 @@ package com.dan.kaftan.mathgame;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
-import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,26 +19,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
-import android.content.Context;
-import android.media.AudioManager;
-import android.media.SoundPool;
 
 import com.dan.kaftan.mathgame.targil.BankOfTargils;
 import com.dan.kaftan.mathgame.targil.Targil;
 import com.dan.kaftan.mathgame.targil.TargilAdd;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 public class Game extends AppCompatActivity {
 
     private static final long START_TIME_IN_MILLIS = 600000;
     TextView tv;
-    int num1;
-    int num2;
     List<Integer> answers = new ArrayList<>();
     int fakeAnswer1 = 0;
     int fakeAnswer2 = 0;
@@ -60,14 +47,14 @@ public class Game extends AppCompatActivity {
     Random rand = new Random();
     int score = 0;
     TextView tvScore;
-    boolean finishCheck = false;
     boolean answerCheck = false;
-    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
     private CountDownTimer mcountDownTimer;
     private CountDownTimer viewResultTimer;
     private boolean mTimerRunning;
     Context context;
     CountDownTimer ab;
+    boolean revive= false;
+
 
     // for disabling sound
     boolean  isVisible = true;
@@ -101,6 +88,8 @@ public class Game extends AppCompatActivity {
         hiv2 = (ImageView) findViewById(R.id.hiv2);
         hiv3 = (ImageView) findViewById(R.id.hiv3);
         tvScore = (TextView) findViewById(R.id.score);
+        copyReviveFromPrevActivity();
+        copyScoreFromPrevActivity(revive);
         tvScore.setText("score: " + Integer.toString(score));
         timer = (TextView) findViewById(R.id.timer);
 
@@ -115,16 +104,9 @@ public class Game extends AppCompatActivity {
 
     public void setGame() {
 
-        if (invalidationCounter == 3) {
-            score = 0;
-        }
         initGameView();
-        //  setTimer();
-        // Sound(Context context);
+
         chooseTargil();
-
-
-
 
         chooseFakeAnswers();
 
@@ -288,49 +270,6 @@ public class Game extends AppCompatActivity {
 
         }
 
-//            new CountDownTimer(3000, 2000) { //40000 milli seconds is total time, 1000 milli seconds is time interval
-//                public void onTick(long millisUntilFinished) {
-//                    try {
-//                        TimeUnit.SECONDS.sleep(2);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    if (invalidationCounter != 3) {
-//                        setGame();
-//
-//                    } else {
-//                        iv.setImageResource(R.drawable.gameover);
-//                        tvFinalScore.setVisibility(View.VISIBLE);
-//                        tvFinalScore.setText("FINAL SCORE: " + Integer.toString(score));
-//                        tvScore.setText("score: 0");
-//
-//                        btn1.setVisibility(View.VISIBLE);
-//                        score = 0;
-//                        btn1.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                try {
-//                                    TimeUnit.SECONDS.sleep(1);
-//                                } catch (InterruptedException e) {
-//                                    e.printStackTrace();
-//                                }
-//                                setGame();
-//                                hiv1.setVisibility(View.VISIBLE);
-//                                hiv2.setVisibility(View.VISIBLE);
-//                                hiv3.setVisibility(View.VISIBLE);
-//                                invalidationCounter = 0;
-//                                score = 0;
-//                            }
-//                        });
-//
-//                    }
-//                }
-//
-//                public void onFinish() {
-//
-//                }
-//
-//            }.start();
     }
 
     public void gameOver() {
@@ -338,6 +277,7 @@ public class Game extends AppCompatActivity {
         if (isVisible){
             Intent a = new Intent(Game.this, EndGame.class);
             a.putExtra("score", score);
+            a.putExtra("revive", revive);
             startActivity(a);
             /*setGame();
             hiv1.setVisibility(View.VISIBLE);
@@ -405,32 +345,6 @@ public class Game extends AppCompatActivity {
     }
 
 
-
-  /* public void Sound(Context context) {
-        //soundPool (int MaxStreams, int streamType, int srcQuality)
-        soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
-        hitSound = soundPool.load(context, R.raw.eror, 1);
-        soundPool.play(hitSound, 1.0f, 1.0f, 1, 0, 1.0f);
-    }*/
-
-    /* public void setTimer() {
-         new CountDownTimer(3000, 1000) {
-
-             public void onTick(long millisUntilFinished) {
-                 timer.setText("" + millisUntilFinished / 1000);
-                 //here you can have your logic to set text to edittext
-             }
-
-             public void onFinish() {
-                 timer.setText("done!");
-
-                 }
-            }.start();
-
- */
-
-
-
     private SoundPool sounds;
     private int sExplosion;
 
@@ -444,9 +358,6 @@ public void correctSoundEffect (){
 
 
 }
-public void falseSoundEffect (){
-
-}
 
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -456,6 +367,20 @@ public void falseSoundEffect (){
             gameOver();
         }
     }
+
+    public void copyReviveFromPrevActivity() {
+        Intent reviveIntent = getIntent(); // gets the previously created intent
+        revive = reviveIntent.getBooleanExtra("revive", false);
+    }
+
+    public void copyScoreFromPrevActivity(boolean revive) {
+        if(revive){
+            Intent reviveIntent = getIntent(); // gets the previously created intent
+            score = reviveIntent.getIntExtra("score", 0);
+        }
+
+    }
+
 
 }
 
