@@ -1,10 +1,8 @@
 package com.dan.kaftan.mathgame;
 
-import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
+import android.media.MediaDataSource;
 import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,12 +22,13 @@ import java.util.Random;
 import com.dan.kaftan.mathgame.targil.BankOfTargils;
 import com.dan.kaftan.mathgame.targil.Targil;
 import com.dan.kaftan.mathgame.targil.TargilAdd;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 
 public class Game extends AppCompatActivity {
 
-    private static final long START_TIME_IN_MILLIS = 600000;
     TextView tv;
+    private AdView mAdView;
     List<Integer> answers = new ArrayList<>();
     int fakeAnswer1 = 0;
     int fakeAnswer2 = 0;
@@ -50,9 +50,6 @@ public class Game extends AppCompatActivity {
     boolean answerCheck = false;
     private CountDownTimer mcountDownTimer;
     private CountDownTimer viewResultTimer;
-    private boolean mTimerRunning;
-    Context context;
-    CountDownTimer ab;
     boolean revive= false;
 
 
@@ -62,8 +59,12 @@ public class Game extends AppCompatActivity {
     // sounds
     MediaPlayer correctSound;
     MediaPlayer falseSound;
+    MediaPlayer threeSecondsSound;
+    MediaPlayer gameSound;
 
     boolean gameOver = false;
+    private static final String TAG = "MainActivity";
+
 
 
     // this holds the targilim we want to run
@@ -77,6 +78,7 @@ public class Game extends AppCompatActivity {
         getSupportActionBar().hide();
 
 
+
         tv = (TextView) findViewById(R.id.tv);
 
         tva1 = (TextView) findViewById(R.id.tva1);
@@ -88,21 +90,33 @@ public class Game extends AppCompatActivity {
         hiv2 = (ImageView) findViewById(R.id.hiv2);
         hiv3 = (ImageView) findViewById(R.id.hiv3);
         tvScore = (TextView) findViewById(R.id.score);
+        mAdView = findViewById(R.id.adView);
         copyReviveFromPrevActivity();
         copyScoreFromPrevActivity(revive);
         tvScore.setText("score: " + Integer.toString(score));
         timer = (TextView) findViewById(R.id.timer);
 
         initTargilim();
+
         correctSound= MediaPlayer.create(Game.this,R.raw.correct);
         falseSound= MediaPlayer.create(Game.this,R.raw.eror);
+        threeSecondsSound = MediaPlayer.create(Game.this,R.raw.three_seconds);
+        gameSound= MediaPlayer.create(Game.this,R.raw.game_sound);
+
+
+
+        //   AdRequest adRequest = new AdRequest.Builder().build();
+  //      mAdView.loadAd(adRequest);
 
         setGame();
 
     }
 
 
+    //  Game setter
+
     public void setGame() {
+
 
         initGameView();
 
@@ -117,6 +131,9 @@ public class Game extends AppCompatActivity {
     }
 
 
+
+
+    // choose the location of the true answer
     private void chooseLocationForAnswers() {
 
         List<TextView> tvaList = Arrays.asList(tva1, tva2, tva3, tva4);
@@ -126,6 +143,9 @@ public class Game extends AppCompatActivity {
         }
     }
 
+
+
+// Get fake answers
     private void chooseFakeAnswers() {
         fakeAnswer1 = rand.nextInt(10) + 1;
         while (fakeAnswer1 == trueAnswer) {
@@ -148,6 +168,12 @@ public class Game extends AppCompatActivity {
         answers.add(fakeAnswer3);
     }
 
+
+
+
+
+
+// Get the question and calc the true answer
     @NonNull
     private void chooseTargil() {
 
@@ -163,6 +189,11 @@ public class Game extends AppCompatActivity {
         answers.add(trueAnswer);
     }
 
+
+
+
+
+    // Change the design to the true/false answer view
     private void initGameView() {
 
         iv.setImageResource(R.drawable.a);
@@ -175,6 +206,10 @@ public class Game extends AppCompatActivity {
         timer.setVisibility(View.VISIBLE);
     }
 
+
+
+
+// set all the questions in a list
     private void initTargilim() {
 
         // take targilim form bank of targilim
@@ -187,6 +222,10 @@ public class Game extends AppCompatActivity {
             }
         }
     }
+
+
+
+    // check the answer right in case of on click
 
     public void tva1OnClick(View v) throws InterruptedException {
         handleClick(v, tva1, false);
@@ -203,6 +242,11 @@ public class Game extends AppCompatActivity {
     public void tva4OnClick(View v) throws InterruptedException {
         handleClick(v, tva4, false);
     }
+
+
+
+
+
 
     public void handleClick(View v, TextView tva, boolean timeOut) throws InterruptedException {
         try {
@@ -223,6 +267,9 @@ public class Game extends AppCompatActivity {
             tv.setVisibility(View.INVISIBLE);
             tvScore.setVisibility(View.INVISIBLE);
             timer.setVisibility(View.INVISIBLE);
+
+
+
 
             if (!timeOut && tvaNum == trueAnswer) {
                 iv.setImageResource(R.drawable.vi);
@@ -279,12 +326,6 @@ public class Game extends AppCompatActivity {
             a.putExtra("score", score);
             a.putExtra("revive", revive);
             startActivity(a);
-            /*setGame();
-            hiv1.setVisibility(View.VISIBLE);
-            hiv2.setVisibility(View.VISIBLE);
-            hiv3.setVisibility(View.VISIBLE);
-            invalidationCounter = 0;
-            score = 0;*/
         } else {
             gameOver = true;
         }
@@ -294,15 +335,25 @@ public class Game extends AppCompatActivity {
         mcountDownTimer = new CountDownTimer(11000, 1000) { //40000 milli seconds is total time, 1000 milli seconds is time interval
             int timerNum = 10;
 
-            public void onTick(long millisUntilFinished) {
-//                try {
-//                    TimeUnit.SECONDS.sleep(5);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
 
+
+
+            public void onTick(long millisUntilFinished) {
                 timer.setText(Integer.toString(timerNum));
+
+
                 timerNum = timerNum - 1;
+
+               gameSound.start();
+               if(isVisible == false){
+                   gameSound.pause();
+               }
+
+               if(timerNum == 3){
+                   threeSecondsSound.start();
+                   System.out.println("threeSecondsSound.start()");
+               }
+
 
             }
 
@@ -339,29 +390,13 @@ public class Game extends AppCompatActivity {
         }.start();
     }
 
-    public void share() {
-
-
-    }
-
-
-    private SoundPool sounds;
-    private int sExplosion;
-
-public void correctSoundEffect (){
-
-
-    //declare variables
-    sounds = new SoundPool(10, AudioManager.STREAM_MUSIC,0);
-    sExplosion = sounds.load(context, R.raw.correct, 1);
-    sounds.play(sExplosion, 1.0f, 1.0f, 0, 0, 1.5f);
-
-
-}
 
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         isVisible = hasFocus;
+
+        gameSound.pause();
+        threeSecondsSound.pause();
         if (isVisible && gameOver) {
             gameOver = false;
             gameOver();
@@ -379,7 +414,10 @@ public void correctSoundEffect (){
             score = reviveIntent.getIntExtra("score", 0);
         }
 
+
     }
+
+
 
 
 }

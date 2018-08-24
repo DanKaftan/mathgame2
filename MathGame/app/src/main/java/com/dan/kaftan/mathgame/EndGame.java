@@ -1,20 +1,32 @@
 package com.dan.kaftan.mathgame;
 
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
 public class EndGame extends AppCompatActivity implements RewardedVideoAdListener {
@@ -26,6 +38,7 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     Button btnStartNewGame;
     String bestScoreString;
     Button btnShare;
+    Button rateStarBtn;
     StringBuffer stringBuffer;
     Button btnRevive;
     ImageView ivRevive;
@@ -33,7 +46,10 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     TextView tvRevive;
     private RewardedVideoAd mRewardedVideoAd;
     private NativeExpressAdView nativeExpressAdView;
+    private static final String FILE_NAME = "best_score.txt";
     boolean revive = false;
+    private static final String TAG = "MainActivity";
+    private AdView mAdView;
 
 
     @Override
@@ -41,13 +57,19 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_game);
         getSupportActionBar().hide();
+
+
         btnRevive = (Button) findViewById(R.id.btnrevive);
         MobileAds.initialize(this, "ca-app-pub-7775472521601802~5091426220");
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mRewardedVideoAd.setRewardedVideoAdListener(this);
-        ivRevive = (ImageView) findViewById(R.id.ivrevive);
         tvRevive = (TextView) findViewById(R.id.tvrevive);
 
+        rateStarBtn = (Button)findViewById(R.id.rate_star_btn);
+        tvBestScore = (TextView)findViewById(R.id.tvBestScore);
+      //  mAdView = findViewById(R.id.adView);
+      //  AdRequest adRequest = new AdRequest.Builder().build();
+       // mAdView.loadAd(adRequest);
 
 
         copyReviveFromPrevActivity();
@@ -65,17 +87,55 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
                 }
             });
         } else {
-
             btnRevive.setVisibility(View.INVISIBLE);
-            ivRevive.setVisibility(View.INVISIBLE);
             tvRevive.setVisibility(View.INVISIBLE);
-
         }
+
+
+
+
+
+
 
 
         displayFinalScore();
         share();
         startNewGame();
+        getBestScore();
+
+
+
+
+
+
+
+        if (bestScore< score){
+            saveBestScore();
+            tvBestScore.setText(Integer.toString(score));
+        }
+        else{
+            tvBestScore.setText(Integer.toString(bestScore));
+
+        }
+
+        rateStarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+                }
+                catch (ActivityNotFoundException e){
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "https://play.google.com/store/apps/details?id=com.dan.kaftan.mathgame")));
+
+                }
+            }
+        });
+
+
+
+
+
+
     }
 
     // set the text of the final score
@@ -123,7 +183,7 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
                     e.printStackTrace();
                 }
                 Intent i = new Intent(EndGame.this, Game.class);
-                i.putExtra("revive", revive);
+                i.putExtra("revive", false);
                 startActivity(i);
             }
 
@@ -132,8 +192,12 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
 
     }
 
+    // reward video ad
+
+
+
     private void loadRewardedVideoAd() {
-        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
+        mRewardedVideoAd.loadAd("ca-app-pub-7775472521601802/7600355285",
                 new AdRequest.Builder().build());
     }
 
@@ -159,10 +223,6 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     @Override
     public void onRewardedVideoAdClosed() {
         System.out.println("onRewardedVideoAdClosed");
-
-        //TODO need to upgrade listener to a version that supports the completed call back
-        onRewardedVideoCompleted();
-
     }
 
     @Override
@@ -184,7 +244,7 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
 
     }
 
-
+    @Override
     public void onRewardedVideoCompleted() {
         System.out.println("onRewardedVideoCompleted");
 
@@ -233,4 +293,72 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         Intent reviveIntent = getIntent(); // gets the previously created intent
         score = reviveIntent.getIntExtra("score", 0);
     }
+
+
+
+
+
+    private void saveBestScore(){
+
+        FileOutputStream fos = null;
+
+        try {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(Integer.toString(score).getBytes());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (fos != null){
+
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+
+    }
+
+    private void getBestScore(){
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput(FILE_NAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+            while ((text = br.readLine()) != null){
+
+                sb.append(text);
+                bestScore = Integer.parseInt(sb.toString());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if(fis != null){
+
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
 }

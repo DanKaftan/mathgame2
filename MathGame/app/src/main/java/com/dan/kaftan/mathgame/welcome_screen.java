@@ -1,6 +1,7 @@
 package com.dan.kaftan.mathgame;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.Animation;
@@ -13,6 +14,7 @@ public class welcome_screen extends AppCompatActivity {
     ImageView iv;
     TextView tv1;
     TextView tv2;
+    MediaPlayer startGameMusic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ getSupportActionBar().hide();
         tv1.startAnimation(myanim);
         tv2.startAnimation(myanim);
         iv.startAnimation(myanim);
+        startGameMusic= MediaPlayer.create(welcome_screen.this,R.raw.start_game_music);
         swichActivity();
 
 
@@ -38,7 +41,14 @@ getSupportActionBar().hide();
         Thread timer = new Thread(){
             public void  run(){
                 try {
-                    sleep(3000);
+                    try{
+                        sleep(1000);
+                    }
+                    catch (InterruptedException e){
+
+                    }
+                    startGameMusic.start();
+                    sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -50,5 +60,6 @@ getSupportActionBar().hide();
         };
         timer.start();
     }
+
 
 }
