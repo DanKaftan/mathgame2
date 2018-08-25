@@ -101,8 +101,8 @@ public class Game extends AppCompatActivity {
         tvScore.setText("score: " + Integer.toString(score));
         timer = (TextView) findViewById(R.id.timer);
 
-//        initTargilim(10,10,100,false,"x");
-        initTargilim(9,9,10, true,"+");
+        initTargilim(10,10,100,false,"x");
+//        initTargilim(9,9,10, true,"+");
 
         correctSound= MediaPlayer.create(Game.this,R.raw.correct);
         falseSound= MediaPlayer.create(Game.this,R.raw.eror);
