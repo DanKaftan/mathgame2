@@ -63,13 +63,14 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         MobileAds.initialize(this, "ca-app-pub-7775472521601802~5091426220");
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mRewardedVideoAd.setRewardedVideoAdListener(this);
-        tvRevive = (TextView) findViewById(R.id.tvrevive);
 
         rateStarBtn = (Button)findViewById(R.id.rate_star_btn);
         tvBestScore = (TextView)findViewById(R.id.tvBestScore);
-      //  mAdView = findViewById(R.id.adView);
-      //  AdRequest adRequest = new AdRequest.Builder().build();
-       // mAdView.loadAd(adRequest);
+
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
 
         copyReviveFromPrevActivity();

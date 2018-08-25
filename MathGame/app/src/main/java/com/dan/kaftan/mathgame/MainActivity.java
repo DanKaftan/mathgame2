@@ -27,15 +27,18 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
 
-  //      mAdView = findViewById(R.id.adView);
-   //     AdRequest adRequest = new AdRequest.Builder().build();
-   //     mAdView.loadAd(adRequest);
+
 
 
 
         mainActivityBackgroud= MediaPlayer.create(MainActivity.this,R.raw.a);
         mainActivityBackgroud.setLooping(true);
         mainActivityBackgroud.start();
+
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         startGame();
 

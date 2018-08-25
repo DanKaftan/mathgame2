@@ -22,6 +22,8 @@ import java.util.Random;
 import com.dan.kaftan.mathgame.targil.BankOfTargils;
 import com.dan.kaftan.mathgame.targil.Targil;
 import com.dan.kaftan.mathgame.targil.TargilAdd;
+import com.dan.kaftan.mathgame.targil.TargilMultiply;
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 
@@ -51,6 +53,9 @@ public class Game extends AppCompatActivity {
     private CountDownTimer mcountDownTimer;
     private CountDownTimer viewResultTimer;
     boolean revive= false;
+
+    int maxResult = Integer.MIN_VALUE;
+    int minResult = Integer.MAX_VALUE;
 
 
     // for disabling sound
@@ -96,7 +101,8 @@ public class Game extends AppCompatActivity {
         tvScore.setText("score: " + Integer.toString(score));
         timer = (TextView) findViewById(R.id.timer);
 
-        initTargilim();
+//        initTargilim(10,10,100,false,"x");
+        initTargilim(9,9,10, true,"+");
 
         correctSound= MediaPlayer.create(Game.this,R.raw.correct);
         falseSound= MediaPlayer.create(Game.this,R.raw.eror);
@@ -105,8 +111,8 @@ public class Game extends AppCompatActivity {
 
 
 
-        //   AdRequest adRequest = new AdRequest.Builder().build();
-  //      mAdView.loadAd(adRequest);
+        AdRequest adRequest = new AdRequest.Builder().build();
+       mAdView.loadAd(adRequest);
 
         setGame();
 
@@ -147,23 +153,41 @@ public class Game extends AppCompatActivity {
 
 // Get fake answers
     private void chooseFakeAnswers() {
-        fakeAnswer1 = rand.nextInt(10) + 1;
+
+        int minFakeResult;
+        int maxFakeResult;
+
+        if (trueAnswer-10 < minResult){
+            minFakeResult = minResult;
+        } else {
+            minFakeResult = trueAnswer - 10;
+        }
+
+        if (trueAnswer+10 > maxResult){
+            maxFakeResult = maxResult;
+        } else {
+            maxFakeResult = trueAnswer + 10;
+        }
+
+        int fakeRange = maxFakeResult-minFakeResult;
+
+        fakeAnswer1 = rand.nextInt(fakeRange) + minFakeResult;
         while (fakeAnswer1 == trueAnswer) {
-            fakeAnswer1 = rand.nextInt(10) + 1;
+            fakeAnswer1 = rand.nextInt(fakeRange) + minFakeResult;
         }
         answers.add(fakeAnswer1);
 
 
-        fakeAnswer2 = rand.nextInt(10) + 1;
+        fakeAnswer2 = rand.nextInt(fakeRange) + minFakeResult;
         while (fakeAnswer2 == trueAnswer || fakeAnswer2 == fakeAnswer1) {
-            fakeAnswer2 = rand.nextInt(10) + 1;
+            fakeAnswer2 = rand.nextInt(fakeRange) + minFakeResult;
         }
         answers.add(fakeAnswer2);
 
 
-        fakeAnswer3 = rand.nextInt(10) + 1;
+        fakeAnswer3 = rand.nextInt(fakeRange) + minFakeResult;
         while (fakeAnswer3 == trueAnswer || fakeAnswer3 == fakeAnswer1 || fakeAnswer3 == fakeAnswer2) {
-            fakeAnswer3 = rand.nextInt(10) + 1;
+            fakeAnswer3 = rand.nextInt(fakeRange) + minFakeResult;
         }
         answers.add(fakeAnswer3);
     }
@@ -210,19 +234,44 @@ public class Game extends AppCompatActivity {
 
 
 // set all the questions in a list
-    private void initTargilim() {
+    private void initTargilim(int maxFirstNum, int maxSecondNum, int maxExpectedResult, boolean resultLimit, String operator) {
 
         // take targilim form bank of targilim
         List<Targil> targilim = bankOfTargils.getTarglilim();
 
         // fill it with new targilim
-        for (int firstNum = 1 ; firstNum < 10; firstNum++){
-            for (int secondNum = 1 ; firstNum + secondNum <= 10 ; secondNum++){
-                targilim.add(new TargilAdd(firstNum,secondNum,"+"));
+        for (int firstNum = 1 ; firstNum < maxFirstNum; firstNum++){
+            for (int secondNum = 1 ; resultLimit? firstNum + secondNum <= maxExpectedResult : secondNum < maxSecondNum ; secondNum++){
+                // generat the targil
+                Targil targil = newTargil(firstNum,secondNum,operator);
+                // add it to bank
+                targilim.add(targil);
+                // calc it
+                int targilResult  = targil.calc();
+                // update max result if needed
+                if (targilResult > maxResult){
+                    maxResult = targilResult;
+                }
+                // update min result if needed
+                if (targilResult < minResult){
+                    minResult= targilResult;
+                }
             }
         }
     }
 
+    private Targil newTargil(int firstNum, int secondNum, String operator){
+        Targil targil;
+        switch (operator){
+            case "+": targil =  new TargilAdd(firstNum,secondNum,operator);
+            break;
+            case "x": targil =  new TargilMultiply(firstNum,secondNum,operator);
+            break;
+
+            default:throw new UnsupportedOperationException();
+        }
+        return targil;
+    }
 
 
     // check the answer right in case of on click

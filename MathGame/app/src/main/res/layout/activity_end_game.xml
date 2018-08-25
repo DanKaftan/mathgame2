@@ -30,7 +30,7 @@
         android:textColor="@android:color/background_light"
         android:textSize="20dp"
         android:textStyle="bold"
-        ads:layout_constraintVertical_bias="0.835"
+        ads:layout_constraintVertical_bias="0.869"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
@@ -75,34 +75,18 @@
 
     <Button
         android:id="@+id/btnrevive"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/revie_btn"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/tvrevive"
+        ads:layout_constraintBottom_toTopOf="@+id/btnStartNewGame"
+        ads:layout_constraintHorizontal_bias="0.478"
+        ads:layout_constraintTop_toBottomOf="@+id/finalScoretv"
         app:layout_constraintEnd_toStartOf="@+id/tvBestScore"
-        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toEndOf="@+id/tvFinalScore"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintVertical_bias="1.0" />
 
-
-    <TextView
-        android:id="@+id/tvrevive"
-        android:layout_width="125dp"
-        android:layout_height="42dp"
-        android:text="revive"
-        android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:visibility="invisible"
-        ads:layout_constraintHorizontal_bias="0.501"
-        ads:layout_constraintVertical_bias="0.641"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -174,6 +158,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"></com.google.android.gms.ads.AdView>
+
 
     <Button
         android:id="@+id/rate_star_btn"
