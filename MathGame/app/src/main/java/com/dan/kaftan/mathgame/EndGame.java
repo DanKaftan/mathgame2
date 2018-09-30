@@ -89,7 +89,6 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
             });
         } else {
             btnRevive.setVisibility(View.INVISIBLE);
-            tvRevive.setVisibility(View.INVISIBLE);
         }
 
 

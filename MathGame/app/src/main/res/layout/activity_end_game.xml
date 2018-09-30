@@ -23,14 +23,14 @@
 
     <Button
         android:id="@+id/btnStartNewGame"
-        android:layout_width="283dp"
-        android:layout_height="65dp"
+        android:layout_width="273dp"
+        android:layout_height="49dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/start_new_game"
         android:textColor="@android:color/background_light"
         android:textSize="20dp"
         android:textStyle="bold"
-        ads:layout_constraintVertical_bias="0.869"
+        ads:layout_constraintVertical_bias="0.852"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
@@ -75,17 +75,18 @@
 
     <Button
         android:id="@+id/btnrevive"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="108dp"
+        android:layout_height="108dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/revie_btn"
-        ads:layout_constraintBottom_toTopOf="@+id/btnStartNewGame"
-        ads:layout_constraintHorizontal_bias="0.478"
-        ads:layout_constraintTop_toBottomOf="@+id/finalScoretv"
-        app:layout_constraintEnd_toStartOf="@+id/tvBestScore"
-        app:layout_constraintStart_toEndOf="@+id/tvFinalScore"
-        app:layout_constraintVertical_bias="1.0" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/revive_btn"
+        ads:layout_constraintBottom_toBottomOf="@+id/adView"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toTopOf="parent"
+        ads:layout_constraintVertical_bias="0.705" />
 
 
     <ImageView

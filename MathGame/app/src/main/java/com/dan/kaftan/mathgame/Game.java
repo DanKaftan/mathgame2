@@ -12,7 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,6 +57,8 @@ public class Game extends AppCompatActivity {
     private CountDownTimer mcountDownTimer;
     private CountDownTimer viewResultTimer;
     boolean revive= false;
+    int timerSeconds;
+    int maxAnswer;
 
     int maxResult = Integer.MIN_VALUE;
     int minResult = Integer.MAX_VALUE;
@@ -101,8 +107,12 @@ public class Game extends AppCompatActivity {
         tvScore.setText("score: " + Integer.toString(score));
         timer = (TextView) findViewById(R.id.timer);
 
-        initTargilim(10,10,100,false,"x");
-//        initTargilim(9,9,10, true,"+");
+
+        getDifficulty();
+        getTimerSeconds();
+   //     initTargilim(10,10,100,false,"x");
+
+        initTargilim(maxAnswer-1,maxAnswer-1,maxAnswer, true,"+");
 
         correctSound= MediaPlayer.create(Game.this,R.raw.correct);
         falseSound= MediaPlayer.create(Game.this,R.raw.eror);
@@ -169,7 +179,7 @@ public class Game extends AppCompatActivity {
             maxFakeResult = trueAnswer + 10;
         }
 
-        int fakeRange = maxFakeResult-minFakeResult;
+        int fakeRange = maxFakeResult-minFakeResult + 1 ;
 
         fakeAnswer1 = rand.nextInt(fakeRange) + minFakeResult;
         while (fakeAnswer1 == trueAnswer) {
@@ -381,8 +391,8 @@ public class Game extends AppCompatActivity {
     }
 
     public void setTimerForAnswer() {
-        mcountDownTimer = new CountDownTimer(11000, 1000) { //40000 milli seconds is total time, 1000 milli seconds is time interval
-            int timerNum = 10;
+        mcountDownTimer = new CountDownTimer((timerSeconds+1)*1000, 1000) { //40000 milli seconds is total time, 1000 milli seconds is time interval
+            int timerNum = timerSeconds;
 
 
 
@@ -464,6 +474,67 @@ public class Game extends AppCompatActivity {
         }
 
 
+    }
+
+    private void getTimerSeconds(){
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput("settings_timer_seconds");
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+            while ((text = br.readLine()) != null){
+
+                sb.append(text);
+                timerSeconds = Integer.parseInt(sb.toString());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if(fis != null){
+
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    private void getDifficulty(){
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput("settings_difficulty");
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+            while ((text = br.readLine()) != null){
+
+                sb.append(text);
+                maxAnswer = Integer.parseInt(sb.toString());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if(fis != null){
+
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 

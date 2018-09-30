@@ -13,6 +13,7 @@ import com.google.android.gms.ads.AdView;
 public class MainActivity extends AppCompatActivity {
 
     Button btn;
+    Button settingsBtn;
     int i = 0;
     private static final String TAG = "MainActivity";
     private AdView mAdView;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
-
+        settingsBtn = (Button)findViewById(R.id.settings_btn);
 
 
 
@@ -40,23 +41,15 @@ public class MainActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-        startGame();
 
 
     }
 
-    public void startGame(){
+    public void startGameClick(View view){
+        mainActivityBackgroud.pause();
+        Intent i = new Intent(MainActivity.this, Game.class);
+        startActivity(i);
 
-
-        btn = (Button) findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mainActivityBackgroud.pause();
-                Intent i = new Intent(MainActivity.this, Game.class);
-                startActivity(i);
-            }
-        });
     }
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -70,7 +63,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    public void settingsClick(View view){
+        mainActivityBackgroud.pause();
+        Intent intent = new Intent(MainActivity.this, Settings.class);
+        startActivity(intent);
 
+    }
 
 
 }
