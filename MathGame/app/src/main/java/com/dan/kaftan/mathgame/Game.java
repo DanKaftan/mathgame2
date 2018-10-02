@@ -27,8 +27,10 @@ import com.dan.kaftan.mathgame.targil.BankOfTargils;
 import com.dan.kaftan.mathgame.targil.Targil;
 import com.dan.kaftan.mathgame.targil.TargilAdd;
 import com.dan.kaftan.mathgame.targil.TargilMultiply;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 
 public class Game extends AppCompatActivity {
@@ -57,8 +59,8 @@ public class Game extends AppCompatActivity {
     private CountDownTimer mcountDownTimer;
     private CountDownTimer viewResultTimer;
     boolean revive= false;
-    int timerSeconds;
-    int maxAnswer;
+    int timerSeconds=10;
+    int maxAnswer=10;
 
     int maxResult = Integer.MIN_VALUE;
     int minResult = Integer.MAX_VALUE;
@@ -76,6 +78,13 @@ public class Game extends AppCompatActivity {
     boolean gameOver = false;
     private static final String TAG = "MainActivity";
 
+    static InterstitialAd interstitialAd;
+
+     static int rand1;
+
+
+
+
 
 
     // this holds the targilim we want to run
@@ -87,6 +96,27 @@ public class Game extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         getSupportActionBar().hide();
+
+
+
+        Random random = new Random();
+        rand1 = random.nextInt(2);
+        if(rand1==1) {
+            interstitialAd = new InterstitialAd(this);
+            interstitialAd.setAdUnitId("ca-app-pub-7775472521601802/1382168273");
+            interstitialAd.loadAd(new AdRequest.Builder().build());
+
+            interstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
+                    interstitialAd.loadAd(new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build());
+                }
+
+            });
+
+
+        }
+
 
 
 
@@ -380,15 +410,17 @@ public class Game extends AppCompatActivity {
 
     public void gameOver() {
 
-        if (isVisible){
-            Intent a = new Intent(Game.this, EndGame.class);
-            a.putExtra("score", score);
-            a.putExtra("revive", revive);
-            startActivity(a);
-        } else {
+        if (isVisible) {
+
+                Intent a = new Intent(Game.this, EndGame.class);
+                a.putExtra("score", score);
+                a.putExtra("revive", revive);
+                startActivity(a);
+        } else{
             gameOver = true;
         }
     }
+
 
     public void setTimerForAnswer() {
         mcountDownTimer = new CountDownTimer((timerSeconds+1)*1000, 1000) { //40000 milli seconds is total time, 1000 milli seconds is time interval
@@ -537,7 +569,11 @@ public class Game extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public void onBackPressed()
+    {
+        moveTaskToBack(true);
+    }
 
 
 }

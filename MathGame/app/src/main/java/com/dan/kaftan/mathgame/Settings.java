@@ -20,7 +20,7 @@ public class Settings extends AppCompatActivity {
     Spinner timerSpinner;
     Spinner difficultySpinner;
     int timerSeconds = 10;
-    int maxAnswer;
+    int maxAnswer =10;
     int selectedMaxAnswer = 10;
     int selectedTimerSeconds = 10;
 
@@ -52,6 +52,7 @@ public class Settings extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timerSpinner.setAdapter(adapter);
         switch (selectedTimerSeconds){
+
             case 3: timerSpinner.setSelection(0);
 
                 break;

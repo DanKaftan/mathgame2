@@ -12,8 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.android.gms.ads.reward.RewardItem;
@@ -27,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class EndGame extends AppCompatActivity implements RewardedVideoAdListener {
@@ -52,11 +56,21 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     private AdView mAdView;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_game);
         getSupportActionBar().hide();
+
+        if (Game.rand1 ==1) {
+            if (Game.interstitialAd.isLoaded()) {
+                Game.interstitialAd.show();
+            }
+        }
+
+
+
 
 
         btnRevive = (Button) findViewById(R.id.btnrevive);
@@ -355,10 +369,9 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         }
     }
 
-
-
-
-
-
-
+    @Override
+    public void onBackPressed()
+    {
+        moveTaskToBack(true);
+    }
 }
