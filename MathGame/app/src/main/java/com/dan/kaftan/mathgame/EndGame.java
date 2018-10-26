@@ -1,22 +1,17 @@
 package com.dan.kaftan.mathgame;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.android.gms.ads.reward.RewardItem;
@@ -24,13 +19,11 @@ import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class EndGame extends AppCompatActivity implements RewardedVideoAdListener {
@@ -369,13 +362,13 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         }
     }
 
-    private void settingsBtn(View view){
+
+    public void settingsBtn(View view){
         Intent intent = new Intent(EndGame.this,Settings.class);
         boolean isFromEnd = true;
         intent.putExtra("isFromEnd",isFromEnd);
-
-
     }
+
 
     @Override
     public void onBackPressed()
