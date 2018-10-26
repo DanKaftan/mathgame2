@@ -173,5 +173,19 @@
         ads:layout_constraintTop_toTopOf="parent"
         ads:layout_constraintVertical_bias="0.0" />
 
+    <Button
+        android:id="@+id/settings_btn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/settings"
+        android:onClick="settingsBtn"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintEnd_toStartOf="@+id/rate_star_btn"
+        ads:layout_constraintHorizontal_bias="1.0"
+        ads:layout_constraintStart_toEndOf="@+id/imageView"
+        ads:layout_constraintTop_toTopOf="parent"
+        ads:layout_constraintVertical_bias="0.009" />
+
 
 </android.support.constraint.ConstraintLayout>

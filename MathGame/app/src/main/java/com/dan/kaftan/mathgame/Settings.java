@@ -133,8 +133,18 @@ public class Settings extends AppCompatActivity {
         timerSeconds=Integer.valueOf(timerSpinner.getSelectedItem().toString());
         saveTimerSeconds();
 
-        Intent i = new Intent(Settings.this, MainActivity.class);
-        startActivity(i);
+        Intent intent = new Intent();
+        boolean isFromEnd =intent.getBooleanExtra("isFromEnd",false);
+        if(isFromEnd){
+            Intent i = new Intent(Settings.this, EndGame.class);
+            startActivity(i);
+
+        }
+        else{
+            Intent i = new Intent(Settings.this, MainActivity.class);
+            startActivity(i);
+
+        }
 
     }
 

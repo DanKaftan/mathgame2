@@ -369,6 +369,14 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         }
     }
 
+    private void settingsBtn(View view){
+        Intent intent = new Intent(EndGame.this,Settings.class);
+        boolean isFromEnd = true;
+        intent.putExtra("isFromEnd",isFromEnd);
+
+
+    }
+
     @Override
     public void onBackPressed()
     {
