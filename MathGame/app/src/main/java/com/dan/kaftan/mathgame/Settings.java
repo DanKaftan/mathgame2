@@ -23,12 +23,17 @@ public class Settings extends AppCompatActivity {
     int maxAnswer =10;
     int selectedMaxAnswer = 10;
     int selectedTimerSeconds = 10;
+    int score=0;
+    boolean revive;
+    boolean mute;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        getSupportActionBar().hide();
+
 
         getSelectedMaxAnswer();
         getSelectedTimerSeconds();
@@ -133,14 +138,20 @@ public class Settings extends AppCompatActivity {
         timerSeconds=Integer.valueOf(timerSpinner.getSelectedItem().toString());
         saveTimerSeconds();
 
-        Intent intent = new Intent();
+        Intent intent = getIntent();
         boolean isFromEnd =intent.getBooleanExtra("isFromEnd",false);
         if(isFromEnd){
+            getVariableFromPrevActivity();
+            System.out.println("came from isFromEnd = true");
             Intent i = new Intent(Settings.this, EndGame.class);
+            i.putExtra("score",score);
+            i.putExtra("revive",revive);
+            i.putExtra("mute", mute);
             startActivity(i);
 
         }
         else{
+            System.out.println("came from isFromEnd = false");
             Intent i = new Intent(Settings.this, MainActivity.class);
             startActivity(i);
 
@@ -264,6 +275,14 @@ public class Settings extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void getVariableFromPrevActivity(){
+        Intent intent = getIntent();
+        score = intent.getIntExtra("score",0);
+        revive = intent.getBooleanExtra("revive",false);
+        mute = intent.getBooleanExtra("mute", false);
+
     }
 
 

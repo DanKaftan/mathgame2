@@ -6,10 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:actionProviderClass="android.widget.ShareActionProvider"
-    android:background="@drawable/game_background"
+    android:background="@drawable/balloons_background"
     android:soundEffectsEnabled="true"
     tools:context="com.dan.kaftan.mathgame.Game"
-    tools:layout_editor_absoluteY="89dp">
+    tools:layout_editor_absoluteY="89dp"
+    android:layoutDirection="ltr">
+
 
     <TextView
         android:id="@+id/tv"
@@ -18,7 +20,7 @@
         android:layout_marginTop="88dp"
         android:fontFamily="casual"
         android:textAlignment="center"
-        android:textColor="@android:color/holo_blue_dark"
+        android:textColor="@android:color/background_dark"
         android:textColorLink="@android:color/background_dark"
         android:textSize="45sp"
         android:textStyle="normal|bold"

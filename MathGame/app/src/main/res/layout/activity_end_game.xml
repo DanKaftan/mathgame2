@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/end_game_background"
+    android:layoutDirection="ltr"
     android:orientation="vertical"
     tools:context=".EndGame">
 
@@ -14,9 +15,8 @@
         android:id="@+id/btnshare"
         android:layout_width="73dp"
         android:layout_height="75dp"
-        android:layout_marginTop="4dp"
         android:background="@drawable/sharebtn"
-        ads:layout_constraintHorizontal_bias="0.0"
+        ads:layout_constraintHorizontal_bias="0.784"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -81,12 +81,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/revive_btn"
+        android:background="@drawable/btn_revive2"
         ads:layout_constraintBottom_toBottomOf="@+id/adView"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintTop_toTopOf="parent"
-        ads:layout_constraintVertical_bias="0.692" />
+        ads:layout_constraintVertical_bias="0.732" />
 
 
     <ImageView
@@ -166,26 +166,33 @@
         android:layout_width="72dp"
         android:layout_height="68dp"
         android:background="@drawable/rate_star"
-        ads:layout_constraintBottom_toTopOf="@+id/imageView"
         ads:layout_constraintEnd_toStartOf="@+id/imageView"
         ads:layout_constraintHorizontal_bias="0.16"
         ads:layout_constraintStart_toEndOf="@+id/imageView"
-        ads:layout_constraintTop_toTopOf="parent"
-        ads:layout_constraintVertical_bias="0.0" />
+        ads:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/settings_btn"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/settings"
         android:onClick="settingsBtn"
-        ads:layout_constraintBottom_toBottomOf="parent"
         ads:layout_constraintEnd_toStartOf="@+id/rate_star_btn"
-        ads:layout_constraintHorizontal_bias="1.0"
-        ads:layout_constraintStart_toEndOf="@+id/imageView"
-        ads:layout_constraintTop_toTopOf="parent"
-        ads:layout_constraintVertical_bias="0.009" />
+        ads:layout_constraintHorizontal_bias="0.0"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/mute_btn2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/mute_off_btn"
+        android:onClick="muteOnClick"
+        ads:layout_constraintEnd_toStartOf="@+id/imageView"
+        ads:layout_constraintHorizontal_bias="0.0"
+        ads:layout_constraintStart_toEndOf="@+id/settings_btn"
+        ads:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

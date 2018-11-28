@@ -80,7 +80,9 @@ public class Game extends AppCompatActivity {
 
     static InterstitialAd interstitialAd;
 
-     static int rand1;
+    static int rand1;
+
+    boolean mute;
 
 
 
@@ -154,6 +156,8 @@ public class Game extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder().build();
        mAdView.loadAd(adRequest);
 
+        setMute();
+
         setGame();
 
     }
@@ -162,7 +166,6 @@ public class Game extends AppCompatActivity {
     //  Game setter
 
     public void setGame() {
-
 
         initGameView();
 
@@ -364,7 +367,7 @@ public class Game extends AppCompatActivity {
                 iv.setImageResource(R.drawable.vi);
 
                 // do not disturb with sounds if not visible
-                if(isVisible){
+                if(isVisible && !mute){
                     correctSound.start();
                 }
                 //   correctSoundEffect(context);
@@ -377,7 +380,7 @@ public class Game extends AppCompatActivity {
                 iv.setImageResource(R.drawable.x);
 
                 // do not disturb with sounds if not visible
-                if(isVisible){
+                if(isVisible && !mute){
                     falseSound.start();
                 }
                 answerCheck = false;
@@ -415,6 +418,7 @@ public class Game extends AppCompatActivity {
                 Intent a = new Intent(Game.this, EndGame.class);
                 a.putExtra("score", score);
                 a.putExtra("revive", revive);
+                a.putExtra("mute", mute);
                 startActivity(a);
         } else{
             gameOver = true;
@@ -435,12 +439,14 @@ public class Game extends AppCompatActivity {
 
                 timerNum = timerNum - 1;
 
-               gameSound.start();
+                if (!mute) {
+                    gameSound.start();
+                }
                if(isVisible == false){
                    gameSound.pause();
                }
 
-               if(timerNum == 3){
+               if(timerNum == 3 && !mute){
                    threeSecondsSound.start();
                    System.out.println("threeSecondsSound.start()");
                }
@@ -567,6 +573,12 @@ public class Game extends AppCompatActivity {
                 }
             }
         }
+    }
+    public void setMute(){
+        Intent intent = getIntent();
+        mute = intent.getBooleanExtra("mute", false);
+
+
     }
 
     @Override

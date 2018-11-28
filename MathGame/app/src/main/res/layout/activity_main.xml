@@ -5,40 +5,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_activity_background"
+    android:background="@drawable/background_kids2"
+    android:layoutDirection="ltr"
     tools:context="com.dan.kaftan.mathgame.MainActivity">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="338dp"
-        android:layout_height="267dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="casual"
-        android:text="MATH GAME FOR FIRST GRADE"
-        android:textAlignment="center"
-        android:textColor="#ffffff"
-        android:textSize="55sp"
-        android:textStyle="bold"
-        ads:layout_constraintVertical_bias="0.205"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn"
-        android:layout_width="259dp"
-        android:layout_height="69dp"
+        android:layout_width="218dp"
+        android:layout_height="52dp"
         android:background="@drawable/play_btn"
         android:onClick="startGameClick"
         android:textSize="36sp"
         android:textStyle="bold"
+        ads:layout_constraintVertical_bias="0.705"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.805" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <com.google.android.gms.ads.AdView
@@ -47,10 +30,10 @@
         android:layout_height="49dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="4dp"
         ads:adSize="LARGE_BANNER"
         ads:adUnitId="ca-app-pub-7775472521601802/4903178791"
         ads:layout_constraintBottom_toBottomOf="parent"
-        ads:layout_constraintTop_toBottomOf="@+id/btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="0.823"></com.google.android.gms.ads.AdView>
@@ -66,5 +49,29 @@
         ads:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="232dp"
+        android:layout_height="213dp"
+        ads:layout_constraintBottom_toTopOf="@+id/btn"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toTopOf="parent"
+        ads:layout_constraintVertical_bias="0.86"
+        ads:srcCompat="@mipmap/icon" />
+
+    <Button
+        android:id="@+id/mute_btn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/mute_off_btn"
+        android:onClick="muteOnClick"
+        ads:layout_constraintBottom_toTopOf="@+id/imageView2"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintHorizontal_bias="0.06"
+        ads:layout_constraintStart_toEndOf="@+id/settings_btn"
+        ads:layout_constraintTop_toTopOf="parent"
+        ads:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

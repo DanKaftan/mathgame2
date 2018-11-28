@@ -14,11 +14,13 @@ public class MainActivity extends AppCompatActivity {
 
     Button btn;
     Button settingsBtn;
+    Button muteBtn;
     int i = 0;
     private static final String TAG = "MainActivity";
     private AdView mAdView;
     MediaPlayer mainActivityBackgroud;
     boolean isVisible =true;
+    boolean mute = false;
 
 
     @Override
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         settingsBtn = (Button)findViewById(R.id.settings_btn);
+        muteBtn = (Button)findViewById(R.id.mute_btn);
 
 
 
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public void startGameClick(View view){
         mainActivityBackgroud.pause();
         Intent i = new Intent(MainActivity.this, Game.class);
+        i.putExtra("mute",mute);
         startActivity(i);
 
     }
@@ -71,4 +75,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void muteOnClick(View view) {
+
+        if (!mute){
+            mute = true;
+            muteBtn.setBackgroundResource(R.drawable.mute_on_btn);
+            mainActivityBackgroud.pause();
+        }
+        else{
+            mute = false;
+            muteBtn.setBackgroundResource(R.drawable.mute_off_btn);
+            mainActivityBackgroud.start();
+
+
+        }
+
+    }
 }

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/end_game_background"
-    tools:context=".Settings">
+    tools:context=".Settings"
+    android:layoutDirection="ltr">
 
     <RelativeLayout
         android:layout_width="337dp"

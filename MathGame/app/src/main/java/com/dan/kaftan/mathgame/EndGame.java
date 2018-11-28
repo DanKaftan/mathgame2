@@ -35,6 +35,7 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     Button btnStartNewGame;
     String bestScoreString;
     Button btnShare;
+    Button muteBtn;
     Button rateStarBtn;
     StringBuffer stringBuffer;
     Button btnRevive;
@@ -47,6 +48,7 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     boolean revive = false;
     private static final String TAG = "MainActivity";
     private AdView mAdView;
+    boolean mute;
 
 
 
@@ -66,6 +68,8 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
 
 
 
+
+
         btnRevive = (Button) findViewById(R.id.btnrevive);
         MobileAds.initialize(this, "ca-app-pub-7775472521601802~5091426220");
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
@@ -73,11 +77,14 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
 
         rateStarBtn = (Button)findViewById(R.id.rate_star_btn);
         tvBestScore = (TextView)findViewById(R.id.tvBestScore);
+        muteBtn = (Button)findViewById(R.id.mute_btn2);
 
 
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+
 
 
         copyReviveFromPrevActivity();
@@ -102,9 +109,8 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
 
 
 
-
-
-
+        setMute();
+        setMuteBackground();
         displayFinalScore();
         share();
         startNewGame();
@@ -191,6 +197,7 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
                 }
                 Intent i = new Intent(EndGame.this, Game.class);
                 i.putExtra("revive", false);
+                i.putExtra("mute",mute);
                 startActivity(i);
             }
 
@@ -367,7 +374,18 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
         Intent intent = new Intent(EndGame.this,Settings.class);
         boolean isFromEnd = true;
         intent.putExtra("isFromEnd",isFromEnd);
+        intent.putExtra("score",score);
+        intent.putExtra("revive",revive);
+        intent.putExtra("mute", mute);
+        startActivity(intent);
     }
+
+    public void setMute(){
+        Intent intent = getIntent();
+        mute = intent.getBooleanExtra("mute", false);
+    }
+
+
 
 
     @Override
@@ -375,4 +393,27 @@ public class EndGame extends AppCompatActivity implements RewardedVideoAdListene
     {
         moveTaskToBack(true);
     }
+
+    public void muteOnClick(View view) {
+        if (mute){
+            muteBtn.setBackgroundResource(R.drawable.mute_off_btn);
+            mute = false;
+        }
+        else{
+            muteBtn.setBackgroundResource(R.drawable.mute_on_btn);
+            mute = true;
+        }
+    }
+
+
+
+    public void setMuteBackground(){
+        if (mute){
+            muteBtn.setBackgroundResource(R.drawable.mute_on_btn);
+        }
+        else{
+            muteBtn.setBackgroundResource(R.drawable.mute_off_btn);
+        }
+    }
 }
+
