@@ -13,8 +13,8 @@
 
     <Button
         android:id="@+id/btnshare"
-        android:layout_width="73dp"
-        android:layout_height="75dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@drawable/sharebtn"
         ads:layout_constraintHorizontal_bias="0.784"
         app:layout_constraintEnd_toEndOf="parent"
@@ -163,8 +163,8 @@
 
     <Button
         android:id="@+id/rate_star_btn"
-        android:layout_width="72dp"
-        android:layout_height="68dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@drawable/rate_star"
         ads:layout_constraintEnd_toStartOf="@+id/imageView"
         ads:layout_constraintHorizontal_bias="0.16"
